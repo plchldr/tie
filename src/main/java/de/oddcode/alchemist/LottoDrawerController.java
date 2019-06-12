@@ -1,6 +1,7 @@
 package de.oddcode.alchemist;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -13,10 +14,10 @@ public class LottoDrawerController {
     @Autowired
     private EntityManager em;
 
-    @RequestMapping(value = "/lottoDrawer/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/lottoDrawer", method = RequestMethod.POST)
     @Transactional
     public Long create(@RequestParam("balls") int balls, @RequestParam("draws") int draws) {
-        var ld = new LottoDrawer(balls,draws);
+        var ld = new LottoDrawer(balls, draws);
         em.persist(ld);
         return ld.getId();
     }
@@ -27,7 +28,7 @@ public class LottoDrawerController {
         return em.find(LottoDrawer.class, id);
     }
 
-    @RequestMapping(value = "/lottoDrawer/{id}/draw",method = RequestMethod.POST)
+    @RequestMapping(value = "/lottoDrawer/{id}/draw", method = RequestMethod.POST)
     @Transactional
     public Set<Integer> draw(@PathVariable("id") Long id) {
         var ld = em.find(LottoDrawer.class, id);
